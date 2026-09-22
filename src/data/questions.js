@@ -426,9 +426,9 @@ export const LOCAL_AUTHORITIES = {
 };
 
 export const INTRO = {
-  title: "How Much Do You Trust the Influence?",
+
   body:
-    "Think about the influencers and social media content you normally see. We just want to know what you really think.\nIt should only take a few minutes. Ready? Let's go!",
+    "Before We Start!\nHi! I’m Imesh Aravindu, an undergraduate in Marketing Management at the Open University of Sri Lanka.\n\nThis short survey explores how influencers affect brand trust and purchase decisions among Gen Z in Sri Lanka. Your honest opinions will help us better understand what makes an influencer trustworthy and how that can shape buying decisions. Your responses are confidential, and used only for academic research.\n\nReady? Let’s see how much you trust the influence!",
   cta: "Start the survey",
   bg: null,
 };
