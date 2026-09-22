@@ -428,7 +428,7 @@ export const LOCAL_AUTHORITIES = {
 export const INTRO = {
   title: "How Much Do You Trust the Influence?",
   body:
-    "Think about the influencers and social media content you normally see. There are no right or wrong answers here - we just want to know what you really think.\n\nIt should only take a few minutes. Ready? Let's go!",
+    "Think about the influencers and social media content you normally see. We just want to know what you really think.\nIt should only take a few minutes. Ready? Let's go!",
   cta: "Start the survey",
   bg: null,
 };

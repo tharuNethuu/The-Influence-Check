@@ -22,40 +22,66 @@ body {
   overflow: hidden;
 }
 
+/* Force a mobile-app look everywhere, including desktop */
 #root {
   height: 100vh;
   height: 100dvh;
   width: 100%;
-  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
 }
-
-/* ---------- Page shell ---------- */
 
 .stage {
   position: relative;
   width: 100%;
+  max-width: 430px;
   height: 100%;
-  background-image: url("/public/1.png");
-  background-color: #000;
-  background-size: contain;
-  background-position: center;
   overflow: hidden;
-  background-repeat: no-repeat;
+  background: #000;
 }
+
+/* ---------- Background video ---------- */
+
+.bg-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+/* ---------- Question / outro pages ---------- */
 
 .page {
   position: absolute;
   inset: 0;
+  z-index: 1;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;   /* was: align-items: center; justify-content: center; */
-  padding: calc(24px + var(--safe-top)) 20px calc(28px + var(--safe-bottom));
+  justify-content: flex-end;
+  padding: calc(24px + var(--safe-top)) 16px calc(60px + var(--safe-bottom));
   overflow-y: auto;
 }
+
+/* ---------- Intro page (fully separate, always centered) ---------- */
+
+.intro-page {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(320px + var(--safe-top)) 16px calc(20px + var(--safe-bottom));
+  overflow-y: auto;
+}
+
 /* ---------- Glass card ---------- */
 
 .glass-card {
-  /* From https://css.glass */
   background: rgba(0, 0, 0, 0.51);
   border-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
@@ -64,15 +90,16 @@ body {
   border: 1px solid rgba(0, 0, 0, 0.09);
 
   width: 100%;
-  max-width: 480px;
-  margin: auto;
-  padding: 36px 28px 30px;
+  max-width: 380px;
+  max-height: 78dvh;
+  margin: 0 auto;
+  padding: 30px 24px 24px;
   color: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 22px;
+  gap: 18px;
 }
 
 .eyebrow {
@@ -82,8 +109,27 @@ body {
   font-weight: 400;
 }
 
+/* Scrollable stack of questions within one section */
+.section-questions {
+  width: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  padding-right: 2px;
+}
+
+.section-question-block {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  gap: 10px;
+}
+
 .question-title {
-  font-size: 22px;
+  font-size: 16px;
   line-height: 1.35;
   font-weight: 500;
   color: #fff;
@@ -91,21 +137,21 @@ body {
 }
 
 .question-subtitle {
-  font-size: 14px;
+  font-size: 12px;
   color: rgba(255, 255, 255, 0.65);
-  margin: -12px 0 0;
+  margin: -6px 0 0;
 }
 
 .intro-title {
   font-size: 28px;
-  line-height: 1.3;
+  line-height: 1.2;
   font-weight: 600;
   margin: 0;
 }
 
 .intro-body,
 .outro-body {
-  font-size: 15px;
+  font-size: 13.5px;
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.8);
   white-space: pre-line;
@@ -115,7 +161,7 @@ body {
 
 .options {
   display: grid;
-  grid-template-columns: 1fr 1fr;   /* was: display: flex; flex-direction: column; */
+  grid-template-columns: 1fr 1fr;
   gap: 10px;
   width: 100%;
 }
@@ -126,7 +172,7 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.18);
   color: #fff;
   font-family: inherit;
-  font-size: 15px;
+  font-size: 13px;
   padding: 13px 16px;
   border-radius: 12px;
   cursor: pointer;
@@ -159,7 +205,7 @@ body {
 
 .scale-options {
   display: grid;
-  grid-template-columns: 1fr 1fr;   /* was: display: flex; flex-direction: column; */
+  grid-template-columns: 1fr 1fr;
   gap: 10px;
   width: 100%;
 }
@@ -167,6 +213,7 @@ body {
 .scale-options .scale-btn:last-child {
   grid-column: 1 / -1;
 }
+
 .scale-btn {
   width: 100%;
   display: flex;
@@ -176,7 +223,7 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.18);
   color: #fff;
   font-family: inherit;
-  font-size: 15px;
+  font-size: 13px;
   padding: 12px 16px;
   border-radius: 12px;
   cursor: pointer;
@@ -210,9 +257,7 @@ body {
   justify-content: center;
   font-size: 13px;
 }
-.other-input {
-  grid-column: 1 / -1;   /* add this line to the existing .other-input rule */
-}
+
 /* Dropdown */
 
 .dropdown-select {
@@ -221,7 +266,7 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.18);
   color: #fff;
   font-family: inherit;
-  font-size: 15px;
+  font-size: 13px;
   padding: 13px 16px;
   border-radius: 12px;
   appearance: none;
@@ -245,6 +290,7 @@ body {
   padding: 12px 16px;
   border-radius: 12px;
   outline: none;
+  grid-column: 1 / -1;
 }
 
 .other-input::placeholder {
@@ -259,11 +305,12 @@ body {
   justify-content: center;
   gap: 16px;
   margin-top: 4px;
+  flex-shrink: 0;
 }
 
 .arrow-btn {
-  width: 56px;
-  height: 56px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.4);
   background: rgba(255, 255, 255, 0.08);
@@ -305,7 +352,6 @@ body {
   }
 }
 
-/* Idle float, draws the eye even without hover */
 .arrow-btn .arrow-icon {
   animation: arrowFloat 1.8s ease-in-out infinite;
 }
@@ -318,39 +364,6 @@ body {
   50% {
     transform: translateX(3px);
   }
-}
-
-.back-link {
-  position: fixed;
-  top: calc(18px + var(--safe-top));
-  left: 18px;
-  z-index: 60;
-  background: none;
-  border: none;
-  color: rgba(255, 255, 255, 0.55);
-  font-family: inherit;
-  font-size: 14px;
-  cursor: pointer;
-  padding: 6px 8px;
-}
-
-.back-link:hover {
-  color: #fff;
-}
-
-.back-link:disabled {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.progress-track {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 3px;
-  background: rgba(255, 255, 255, 0.85);
-  z-index: 60;
-  transition: width 0.4s ease;
 }
 
 /* ---------- Wipe transition overlay ---------- */
@@ -394,10 +407,10 @@ body {
 
 .page-content {
   width: 100%;
-  min-height: 50dvh;           /* new: forces this wrapper into the lower half */
-  display: flex;               /* new */
-  align-items: center;         /* new */
-  justify-content: center;     /* new */
+  min-height: 70dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   animation: fadeIn 0.35s ease both;
 }
 
@@ -432,12 +445,6 @@ body {
   border-top-color: #fff;
   animation: spin 0.7s linear infinite;
 }
-@media (max-width: 380px) {
-  .options,
-  .scale-options {
-    grid-template-columns: 1fr;
-  }
-}
 
 @keyframes spin {
   to {
@@ -445,11 +452,18 @@ body {
   }
 }
 
+@media (max-width: 380px) {
+  .options,
+  .scale-options {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Mobile tightening */
 @media (max-width: 420px) {
   .glass-card {
-    padding: 28px 20px 24px;
-    gap: 18px;
+    padding: 26px 18px 20px;
+    gap: 16px;
   }
 
   .intro-title {
@@ -457,22 +471,17 @@ body {
   }
 
   .question-title {
-    font-size: 19px;
+    font-size: 18px;
   }
 }
 
-/* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .wipe-overlay,
   .page-content,
   .arrow-icon {
     animation: none !important;
   }
-}
-@media (max-width: 600px) {
-  .stage {
-    background-image: url("/1.png");
-    background-size: cover;
-    background-position: center center;
+  .bg-video {
+    display: none;
   }
 }

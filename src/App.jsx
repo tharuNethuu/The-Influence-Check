@@ -7,7 +7,6 @@ import OutroCard from "./components/OutroCard.jsx";
 import { submitAnswers } from "./lib/submit.js";
 
 const INTRO_INDEX = -1;
-const OUTRO_INDEX = QUESTIONS.length;
 
 function isAnswered(question, value, otherText) {
   if (!question) return true;
@@ -25,38 +24,48 @@ function isAnswered(question, value, otherText) {
   return true;
 }
 
+// Group the flat QUESTIONS list into sections, preserving first-seen order.
+function buildSections(questions) {
+  const sections = [];
+  const bySection = new Map();
+  questions.forEach((q) => {
+    const key = q.section || "General";
+    if (!bySection.has(key)) {
+      const section = { title: key, questions: [] };
+      bySection.set(key, section);
+      sections.push(section);
+    }
+    bySection.get(key).questions.push(q);
+  });
+  return sections.map((s, i) => ({ ...s, number: String(i + 1).padStart(2, "0") }));
+}
+
 export default function App() {
-  const [index, setIndex] = useState(INTRO_INDEX);
-  const [answers, setAnswers] = useState({}); // { [questionId]: value }
-  const [otherTexts, setOtherTexts] = useState({}); // { [questionId]: string }
-  const [wipePhase, setWipePhase] = useState("idle"); // idle | covering | revealing
+  const SECTIONS = useMemo(() => buildSections(QUESTIONS), []);
+  const OUTRO_INDEX = SECTIONS.length;
+
+  const [index, setIndex] = useState(INTRO_INDEX); // -1 intro, 0..n-1 sections, n outro
+  const [answers, setAnswers] = useState({});
+  const [otherTexts, setOtherTexts] = useState({});
+  const [wipePhase, setWipePhase] = useState("idle");
   const [animating, setAnimating] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState("idle"); // idle | submitting | success | error
+  const [submitStatus, setSubmitStatus] = useState("idle");
   const [submitError, setSubmitError] = useState("");
 
-  const rawQuestion = index >= 0 && index < QUESTIONS.length ? QUESTIONS[index] : null;
+  const currentSection = index >= 0 && index < SECTIONS.length ? SECTIONS[index] : null;
 
-  // Resolve "dependsOn" dropdowns (e.g. city options depend on the chosen
-  // district) into a concrete options array for this render.
-  const currentQuestion = useMemo(() => {
-    if (!rawQuestion) return null;
-    if (!rawQuestion.dependsOn) return rawQuestion;
-    const dependValue = answers[rawQuestion.dependsOn];
-    return { ...rawQuestion, options: LOCAL_AUTHORITIES[dependValue] || [] };
-  }, [rawQuestion, answers]);
+  // Resolve "dependsOn" dropdowns for every question in the current section.
+  const resolvedQuestions = useMemo(() => {
+    if (!currentSection) return [];
+    return currentSection.questions.map((q) => {
+      if (!q.dependsOn) return q;
+      const dependValue = answers[q.dependsOn];
+      return { ...q, options: LOCAL_AUTHORITIES[dependValue] || [] };
+    });
+  }, [currentSection, answers]);
 
-  const currentBg =
-    index === INTRO_INDEX
-      ? INTRO.bg
-      : index === OUTRO_INDEX
-      ? OUTRO.bg
-      : currentQuestion?.bg || null;
-
-  const progressPct = useMemo(() => {
-    if (index <= INTRO_INDEX) return 0;
-    if (index >= QUESTIONS.length) return 100;
-    return Math.round(((index + 1) / QUESTIONS.length) * 100);
-  }, [index]);
+  // Background video: intro gets homebg.mp4, everything else gets bg.mp4.
+  const bgVideoSrc = index === INTRO_INDEX ? "/homebg.mp4" : "/bg.mp4";
 
   const goTo = useCallback(
     (nextIndex) => {
@@ -75,14 +84,11 @@ export default function App() {
     [animating]
   );
 
-  const handleChange = (value) => {
-    if (!currentQuestion) return;
+  const handleChange = (question, value) => {
     setAnswers((prev) => {
-      const next = { ...prev, [currentQuestion.id]: value };
-      // Clear any answer that depends on this question (e.g. the city
-      // dropdown depends on the district — its old value no longer applies).
+      const next = { ...prev, [question.id]: value };
       QUESTIONS.forEach((q) => {
-        if (q.dependsOn === currentQuestion.id && next[q.id] !== undefined) {
+        if (q.dependsOn === question.id && next[q.id] !== undefined) {
           delete next[q.id];
         }
       });
@@ -90,9 +96,8 @@ export default function App() {
     });
   };
 
-  const handleOtherText = (text) => {
-    if (!currentQuestion) return;
-    setOtherTexts((prev) => ({ ...prev, [currentQuestion.id]: text }));
+  const handleOtherText = (question, text) => {
+    setOtherTexts((prev) => ({ ...prev, [question.id]: text }));
   };
 
   const buildFinalAnswers = () => {
@@ -119,12 +124,12 @@ export default function App() {
       return;
     }
 
-    if (index < QUESTIONS.length - 1) {
+    if (index < SECTIONS.length - 1) {
       goTo(index + 1);
       return;
     }
 
-    // last question -> submit then show outro
+    // last section -> submit then show outro
     if (animating) return;
     setAnimating(true);
     setWipePhase("covering");
@@ -156,61 +161,69 @@ export default function App() {
     }
   };
 
-  const currentValue = currentQuestion ? answers[currentQuestion.id] : undefined;
-  const currentOther = currentQuestion ? otherTexts[currentQuestion.id] : "";
   const canProceed =
-    index === INTRO_INDEX ? true : isAnswered(currentQuestion, currentValue, currentOther);
-
-  const stageStyle = currentBg
-    ? { backgroundImage: `url(${currentBg})` }
-    : undefined;
+    index === INTRO_INDEX
+      ? true
+      : resolvedQuestions.every((q) => isAnswered(q, answers[q.id], otherTexts[q.id]));
 
   return (
-    <div className="stage" style={stageStyle}>
-      {index !== INTRO_INDEX && index !== OUTRO_INDEX && (
-        <div className="progress-track" style={{ width: `${progressPct}%` }} />
+    <div className="stage">
+      <video
+        key={bgVideoSrc}
+        className="bg-video"
+        src={bgVideoSrc}
+        autoPlay
+        muted
+        loop
+        playsInline
+      />
+
+    {index === INTRO_INDEX ? (
+  <div className="intro-page" key={index}>
+    <IntroCard intro={INTRO} onStart={handleNext} />
+  </div>
+) : (
+  <div className="page">
+    <div className="page-content" key={index}>
+      {currentSection && (
+        <div className="glass-card">
+          <span className="eyebrow">
+            {currentSection.number} · {currentSection.title}
+          </span>
+
+          <div className="section-questions">
+            {resolvedQuestions.map((q) => (
+              <div className="section-question-block" key={q.id}>
+                <h2 className="question-title">{q.title}</h2>
+                {q.subtitle && <p className="question-subtitle">{q.subtitle}</p>}
+                <QuestionCard
+                  question={q}
+                  value={answers[q.id]}
+                  otherText={otherTexts[q.id]}
+                  onChange={(value) => handleChange(q, value)}
+                  onOtherText={(text) => handleOtherText(q, text)}
+                />
+              </div>
+            ))}
+          </div>
+
+          <div className="nav-buttons">
+            <ArrowButton direction="back" onClick={handleBack} disabled={false} />
+            <ArrowButton direction="next" onClick={handleNext} disabled={!canProceed} />
+          </div>
+        </div>
       )}
 
-    
+      {index === OUTRO_INDEX && (
+        <OutroCard outro={OUTRO} status={submitStatus} error={submitError} />
+      )}
+    </div>
+  </div>
+)}
 
-      <div className="page">
-        <div className="page-content" key={index}>
-          {index === INTRO_INDEX && <IntroCard intro={INTRO} onStart={handleNext} />}
-
-          {currentQuestion && (
-            <div className="glass-card">
-              <span className="eyebrow">
-                {currentQuestion.section} · Question {currentQuestion.number} of {QUESTIONS.length}
-              </span>
-              <h2 className="question-title">{currentQuestion.title}</h2>
-              {currentQuestion.subtitle && (
-                <p className="question-subtitle">{currentQuestion.subtitle}</p>
-              )}
-              <QuestionCard
-                question={currentQuestion}
-                value={currentValue}
-                otherText={currentOther}
-                onChange={handleChange}
-                onOtherText={handleOtherText}
-              />
-             <div className="nav-buttons">
-              <ArrowButton
-                direction="back"
-                onClick={handleBack}
-                disabled={index === 0 && index === INTRO_INDEX}
-              />
-              <ArrowButton direction="next" onClick={handleNext} disabled={!canProceed} />
-            </div>
-            </div>
-          )}
-
-          {index === OUTRO_INDEX && (
-            <OutroCard outro={OUTRO} status={submitStatus} error={submitError} />
-          )}
-        </div>
-      </div>
-
-      {wipePhase !== "idle" && <div className={`wipe-overlay ${wipePhase === "covering" ? "cover" : "reveal"}`} />}
+      {wipePhase !== "idle" && (
+        <div className={`wipe-overlay ${wipePhase === "covering" ? "cover" : "reveal"}`} />
+      )}
     </div>
   );
 }
