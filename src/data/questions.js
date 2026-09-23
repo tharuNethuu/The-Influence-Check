@@ -426,7 +426,7 @@ export const LOCAL_AUTHORITIES = {
 };
 
 export const INTRO = {
-  title: "The Impact of Influencer Marketing in Sri Lanka's Hospitality Industry",
+  title: "",
   body:
     "",
   cta: "Start the survey",
