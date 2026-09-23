@@ -434,7 +434,7 @@ export const INTRO = {
 };
 
 export const OUTRO = {
-  title: "That's a wrap!",
+  title: "",
   body:
     "Thank you for sharing your honest opinions. Your answers will help us understand how influencer marketing shapes brand trust and purchase intention among Generation Z consumers in the Sri Lankan hospitality industry.\n\nThank you for being part of the study.",
   bg: null,

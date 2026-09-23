@@ -152,10 +152,10 @@ body {
 .intro-body,
 .outro-body {
   font-size: 13.5px;
-  line-height: 1.6;
+  line-height: 2;
   color: rgba(255, 255, 255, 0.8);
   white-space: pre-line;
-  margin: -20px 0 0;
+  margin: -30px 0 0;
 }
 
 /* ---------- Options ---------- */
