@@ -53,6 +53,9 @@ export default function App() {
   const [submitError, setSubmitError] = useState("");
 
   const currentSection = index >= 0 && index < SECTIONS.length ? SECTIONS[index] : null;
+  const failedScreening =
+  answers.q_screen_age === "No" ||
+  answers.q_screen_follows === "No";
 
   // Resolve "dependsOn" dropdowns for every question in the current section.
   const resolvedQuestions = useMemo(() => {
@@ -118,39 +121,53 @@ export default function App() {
     return out;
   };
 
-  const handleNext = async () => {
-    if (index === INTRO_INDEX) {
-      goTo(0);
-      return;
-    }
+  const finishSurvey = async () => {
+  if (animating) return;
 
-    if (index < SECTIONS.length - 1) {
-      goTo(index + 1);
-      return;
-    }
+  setAnimating(true);
+  setWipePhase("covering");
 
-    // last section -> submit then show outro
-    if (animating) return;
-    setAnimating(true);
-    setWipePhase("covering");
-    window.setTimeout(async () => {
-      setIndex(OUTRO_INDEX);
-      setWipePhase("revealing");
-      window.setTimeout(() => {
-        setWipePhase("idle");
-        setAnimating(false);
-      }, 420);
+  window.setTimeout(async () => {
+    setIndex(OUTRO_INDEX);
+    setWipePhase("revealing");
 
-      setSubmitStatus("submitting");
-      try {
-        await submitAnswers(buildFinalAnswers());
-        setSubmitStatus("success");
-      } catch (err) {
-        setSubmitStatus("error");
-        setSubmitError(err?.message || "unknown error");
-      }
+    window.setTimeout(() => {
+      setWipePhase("idle");
+      setAnimating(false);
     }, 420);
-  };
+
+    setSubmitStatus("submitting");
+
+    try {
+      await submitAnswers(buildFinalAnswers());
+      setSubmitStatus("success");
+    } catch (err) {
+      setSubmitStatus("error");
+      setSubmitError(err?.message || "unknown error");
+    }
+  }, 420);
+};
+
+ const handleNext = async () => {
+  if (index === INTRO_INDEX) {
+    goTo(0);
+    return;
+  }
+
+  // Screening failed -> end questionnaire
+  if (currentSection?.title === "Screening" && failedScreening) {
+    await finishSurvey();
+    return;
+  }
+
+  if (index < SECTIONS.length - 1) {
+    goTo(index + 1);
+    return;
+  }
+
+  // Final section -> submit and finish
+  await finishSurvey();
+};
 
   const handleBack = () => {
     if (index === INTRO_INDEX || index === OUTRO_INDEX) return;

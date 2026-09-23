@@ -426,9 +426,9 @@ export const LOCAL_AUTHORITIES = {
 };
 
 export const INTRO = {
-
+  title: "The Impact of Influencer Marketing in Sri Lanka's Hospitality Industry",
   body:
-    "Before We Start!\nHi! I’m Imesh Aravindu, an undergraduate in Marketing Management at the Open University of Sri Lanka.\n\nThis short survey explores how influencers affect brand trust and purchase decisions among Gen Z in Sri Lanka. Your honest opinions will help us better understand what makes an influencer trustworthy and how that can shape buying decisions. Your responses are confidential, and used only for academic research.\n\nReady? Let’s see how much you trust the influence!",
+    "",
   cta: "Start the survey",
   bg: null,
 };
@@ -436,7 +436,7 @@ export const INTRO = {
 export const OUTRO = {
   title: "That's a wrap!",
   body:
-    "Thank you for sharing your honest opinions. Your answers will help us understand how influencer credibility, trust, and social media behaviour affect purchasing decisions among Generation Z consumers in Sri Lanka.\n\nThank you for being part of the study.",
+    "Thank you for sharing your honest opinions. Your answers will help us understand how influencer marketing shapes brand trust and purchase intention among Generation Z consumers in the Sri Lankan hospitality industry.\n\nThank you for being part of the study.",
   bg: null,
 };
 
@@ -452,29 +452,40 @@ export const QUESTIONS = [
     bg: null,
   },
 
+  // 00b - Screening
+  {
+    id: "q_screen_age",
+    section: "Screening",
+    number: 2,
+    title: "Are you between 14 and 29 years of age?",
+    type: "single",
+    options: ["Yes", "No"],
+    bg: null,
+  },
+  {
+    id: "q_screen_follows",
+    section: "Screening",
+    number: 3,
+    title: "Do you follow any influencers who promote the hospitality industry?",
+    type: "single",
+    options: ["Yes", "No"],
+    bg: null,
+  },
+
   // 01 - A Little About You
   {
     id: "q1_gender",
     section: "A Little About You",
-    number: 2,
-    title: "How would you like to describe your gender?",
+    number: 4,
+    title: "What is your gender?",
     type: "single",
-    options: ["Male", "Female", "Prefer not to say"],
-    bg: null,
-  },
-  {
-    id: "q2_age",
-    section: "A Little About You",
-    number: 3,
-    title: "How old are you?",
-    type: "single",
-    options: ["13 years or below", "14–18 years", "18–29 years", "30 years or above"],
+    options: ["Male", "Female", "Prefer not to share"],
     bg: null,
   },
   {
     id: "q3_district",
     section: "A Little About You",
-    number: 4,
+    number: 5,
     title: "Which district do you currently live in?",
     type: "dropdown",
     placeholder: "Select your district",
@@ -484,7 +495,7 @@ export const QUESTIONS = [
   {
     id: "q3b_city",
     section: "A Little About You",
-    number: 5,
+    number: 6,
     title: "Which city / local authority area do you live in?",
     subtitle: "Options are based on the district you just picked.",
     type: "dropdown",
@@ -495,11 +506,17 @@ export const QUESTIONS = [
   {
     id: "q4_situation",
     section: "A Little About You",
-    number: 6,
-    title: "What best describes your current situation?",
+    number: 7,
+    title: "Which of the following best describes your current situation?",
     type: "single",
-    options: ["Student", "Employed", "Self-employed", "Unemployed"],
-    allowOther: true,
+    options: [
+      "Student",
+      "Undergraduate",
+      "Employed in private sector",
+      "Employed in government sector",
+      "Self-employed",
+      "Unemployed",
+    ],
     bg: null,
   },
 
@@ -507,346 +524,299 @@ export const QUESTIONS = [
   {
     id: "q5_platforms",
     section: "Your Social Media World",
-    number: 7,
+    number: 8,
     title: "Which social media platforms do you actively use?",
-    subtitle: "Select all that apply.",
+    subtitle: "You may select more than one option.",
     type: "multi",
-    options: ["TikTok", "Instagram", "Facebook", "YouTube"],
+    options: ["Facebook", "YouTube", "Instagram", "TikTok"],
     allowOther: true,
     bg: null,
   },
   {
     id: "q6_influencer_count",
     section: "Your Social Media World",
-    number: 8,
-    title: "About how many influencers do you currently follow?",
+    number: 9,
+    title:
+      "Approximately, how many influencers who promote the hospitality industry do you follow across all social media platforms?",
     type: "single",
-    options: ["Less than 5", "5–10", "More than 10"],
+    options: ["1-3", "4-6", "7-9", "More than 10"],
     bg: null,
   },
   {
     id: "q7_follower_count",
     section: "Your Social Media World",
-    number: 9,
+    number: 10,
     title:
-      "Think about the influencers you follow most. How many followers do they usually have on their main platform?",
+      "What is the follower count held by the majority of the influencers you follow on their main platform?",
     type: "single",
     options: [
-      "Less than 10,000",
-      "10,000–100,000",
-      "100,000–1,000,000",
-      "More than 1,000,000",
+      "1,000 – 10,000",
+      "10,001 – 100,000",
+      "100,001 – 1,000,000",
+      "More than 1 Million",
     ],
     bg: null,
   },
+
+  // 03 - Trustworthiness
   {
-    id: "q8_purchase_influenced",
-    section: "Your Social Media World",
-    number: 10,
-    title: "Has an influencer's recommendation ever influenced you to make a purchase?",
-    type: "single",
-    options: ["Yes", "No"],
-    bg: null,
-  },
-  {
-    id: "q9_trust_more_than_ad",
-    section: "Your Social Media World",
+    id: "q_trust_1",
+    section: "Trustworthiness",
     number: 11,
-    title:
-      "When you see a product recommendation from an influencer, do you usually trust it more than an advertisement directly from the company?",
-    type: "single",
-    options: ["Yes", "No"],
+    title: "The influencers I follow are dependable.",
+    type: "scale",
     bg: null,
   },
-
-  // 03A - Expertise
   {
-    id: "q10_field_knowledge",
-    section: "Do They Know What They're Talking About?",
+    id: "q_trust_2",
+    section: "Trustworthiness",
     number: 12,
-    title:
-      "How much does an influencer's knowledge about a product's field affect your trust in the brand they recommend?",
+    title: "The influencers I follow are honest.",
     type: "scale",
     bg: null,
   },
   {
-    id: "q11_education_background",
-    section: "Do They Know What They're Talking About?",
+    id: "q_trust_3",
+    section: "Trustworthiness",
     number: 13,
-    title:
-      "Does an influencer's educational or professional background affect how much you trust the brand they recommend?",
+    title: "The influencers I follow are reliable.",
     type: "scale",
     bg: null,
   },
   {
-    id: "q12_competence",
-    section: "Do They Know What They're Talking About?",
+    id: "q_trust_4",
+    section: "Trustworthiness",
     number: 14,
-    title:
-      "Does an influencer's ability and competence in the relevant product area affect your trust in the brand?",
+    title: "The influencers I follow are sincere.",
     type: "scale",
     bg: null,
   },
   {
-    id: "q13_maturity",
-    section: "Do They Know What They're Talking About?",
+    id: "q_trust_5",
+    section: "Trustworthiness",
     number: 15,
-    title: "Does the maturity of an influencer affect how much you trust the brand they recommend?",
+    title: "The influencers I follow are trustworthy.",
     type: "scale",
     bg: null,
   },
 
-  // 03B - Trustworthiness
+  // 04 - Expertise
   {
-    id: "q14_authenticity",
-    section: "Can I Actually Trust Them?",
+    id: "q_expertise_1",
+    section: "Expertise",
     number: 16,
-    title:
-      "How much does an influencer's authenticity affect your trust in the brand they recommend?",
+    title: "The influencers I follow are experts in the hospitality industry.",
     type: "scale",
     bg: null,
   },
   {
-    id: "q15_honesty",
-    section: "Can I Actually Trust Them?",
+    id: "q_expertise_2",
+    section: "Expertise",
     number: 17,
-    title:
-      "Does an influencer's honesty and integrity affect your trust in the brand they recommend?",
+    title: "The influencers I follow are experienced in the hospitality industry.",
     type: "scale",
     bg: null,
   },
   {
-    id: "q16_responsibility",
-    section: "Can I Actually Trust Them?",
+    id: "q_expertise_3",
+    section: "Expertise",
     number: 18,
-    title:
-      "Does feeling that an influencer takes responsibility for what they promote affect your trust in the brand?",
+    title: "The influencers I follow possess proven skills in the hospitality industry.",
     type: "scale",
     bg: null,
   },
   {
-    id: "q17_loyalty",
-    section: "Can I Actually Trust Them?",
+    id: "q_expertise_4",
+    section: "Expertise",
     number: 19,
-    title:
-      "Does an influencer's loyalty to a brand - for example, not promoting competing products within a short period - affect your trust in that brand?",
+    title: "The influencers I follow are knowledgeable about the hospitality industry.",
     type: "scale",
     bg: null,
   },
-
-  // 03C - Presentation
   {
-    id: "q18_communication",
-    section: "Do I Like the Way They Present It?",
+    id: "q_expertise_5",
+    section: "Expertise",
     number: 20,
     title:
-      "Does the way an influencer communicates and uses language affect your trust in the brand they recommend?",
+      "The influencers I follow are qualified to make recommendations related to the hospitality industry.",
     type: "scale",
     bg: null,
   },
+
+  // 05 - Attractiveness
   {
-    id: "q19_appearance",
-    section: "Do I Like the Way They Present It?",
+    id: "q_attract_1",
+    section: "Attractiveness",
     number: 21,
-    title:
-      "Does an influencer's physical appearance affect your trust in the brand they recommend?",
+    title: "The influencers I follow are attractive.",
     type: "scale",
     bg: null,
   },
   {
-    id: "q20_presentation_style",
-    section: "Do I Like the Way They Present It?",
+    id: "q_attract_2",
+    section: "Attractiveness",
     number: 22,
-    title:
-      "Does the way an influencer presents information affect your trust in the brand they recommend?",
+    title: "The influencers I follow are charismatic.",
     type: "scale",
     bg: null,
   },
   {
-    id: "q21_charisma",
-    section: "Do I Like the Way They Present It?",
+    id: "q_attract_3",
+    section: "Attractiveness",
     number: 23,
-    title: "Does an influencer's charisma affect your trust in the brand they recommend?",
+    title: "The influencers I follow are good looking.",
     type: "scale",
     bg: null,
   },
-
-  // 03D - Reputation
   {
-    id: "q22_popularity",
-    section: "What Do You Think About Their Reputation?",
+    id: "q_attract_4",
+    section: "Attractiveness",
     number: 24,
-    title:
-      "Does an influencer's popularity or number of followers affect your trust in the brand they recommend?",
+    title: "The influencers I follow are admirable.",
     type: "scale",
     bg: null,
   },
   {
-    id: "q23_reputation",
-    section: "What Do You Think About Their Reputation?",
+    id: "q_attract_5",
+    section: "Attractiveness",
     number: 25,
-    title: "Does an influencer's reputation affect your trust in the brand they recommend?",
+    title: "The influencers I follow are beautiful.",
     type: "scale",
     bg: null,
   },
+
+  // 06 - Respect
   {
-    id: "q24_background",
-    section: "What Do You Think About Their Reputation?",
+    id: "q_respect_1",
+    section: "Respect",
     number: 26,
-    title: "Does an influencer's background affect your trust in the brand they recommend?",
+    title: "The influencers I follow do not have any negative comments against them.",
     type: "scale",
     bg: null,
   },
   {
-    id: "q25_achievements",
-    section: "What Do You Think About Their Reputation?",
+    id: "q_respect_2",
+    section: "Respect",
     number: 27,
-    title:
-      "Do an influencer's achievements and awards affect your trust in the brand they recommend?",
+    title: "The influencers I follow are likable.",
     type: "scale",
     bg: null,
   },
-
-  // 03E - Similarity
   {
-    id: "q26_similar_characteristics",
-    section: "Do I Feel Like They're One of Us?",
+    id: "q_respect_3",
+    section: "Respect",
     number: 28,
-    title:
-      "Does sharing similar characteristics with an influencer - such as age, gender, location, nationality, or occupation - affect your trust in the brand they recommend?",
+    title: "The influencers I follow can be considered role models.",
     type: "scale",
     bg: null,
   },
   {
-    id: "q27_similar_values",
-    section: "Do I Feel Like They're One of Us?",
+    id: "q_respect_4",
+    section: "Respect",
     number: 29,
-    title:
-      "Does sharing similar values and morals with an influencer affect your trust in the brand they recommend?",
+    title: "The influencers I follow have earned a strong reputation.",
     type: "scale",
     bg: null,
   },
+
+  // 07 - Similarity
   {
-    id: "q28_relatability",
-    section: "Do I Feel Like They're One of Us?",
+    id: "q_similarity_1",
+    section: "Similarity",
     number: 30,
-    title: "Does feeling that you can relate to an influencer affect your trust in the brand they recommend?",
+    title: "I have a lot in common with the influencers I follow.",
     type: "scale",
     bg: null,
   },
   {
-    id: "q29_peer_feeling",
-    section: "Do I Feel Like They're One of Us?",
+    id: "q_similarity_2",
+    section: "Similarity",
     number: 31,
-    title:
-      "Does feeling that an influencer is like a peer or \"someone like me\" affect your trust in the brand they recommend?",
+    title: "The influencers I follow and I are a lot alike.",
     type: "scale",
     bg: null,
   },
-
-  // 04 - Brand trust
   {
-    id: "q30_confident",
-    section: "Okay, But Do You Trust the Brand?",
+    id: "q_similarity_3",
+    section: "Similarity",
     number: 32,
-    title: "I feel confident using products or brands recommended by influencers I follow.",
-    type: "scale",
-    bg: null,
-  },
-  {
-    id: "q31_safe",
-    section: "Okay, But Do You Trust the Brand?",
-    number: 33,
-    title: "I feel safe using products or brands recommended by influencers I follow.",
-    type: "scale",
-    bg: null,
-  },
-  {
-    id: "q32_suitable",
-    section: "Okay, But Do You Trust the Brand?",
-    number: 34,
-    title: "I feel that products or brands recommended by influencers I follow are suitable for me.",
-    type: "scale",
-    bg: null,
-  },
-  {
-    id: "q33_reliable",
-    section: "Okay, But Do You Trust the Brand?",
-    number: 35,
-    title: "I feel that products or brands recommended by influencers I follow are reliable.",
+    title: "I can easily identify with the influencers I follow.",
     type: "scale",
     bg: null,
   },
 
-  // 05 - Purchase intention
+  // 08 - Brand Trust
   {
-    id: "q34_wanted_new_product",
-    section: "Be Honest... Would You Buy It?",
+    id: "q_brandtrust_1",
+    section: "Brand Trust",
+    number: 33,
+    title: "I trust the hotels and other hospitality services promoted by the influencers I follow.",
+    type: "scale",
+    bg: null,
+  },
+  {
+    id: "q_brandtrust_2",
+    section: "Brand Trust",
+    number: 34,
+    title:
+      "I feel that the hotels and other hospitality services promoted by the influencers I follow are safe.",
+    type: "scale",
+    bg: null,
+  },
+  {
+    id: "q_brandtrust_3",
+    section: "Brand Trust",
+    number: 35,
+    title:
+      "I feel that the hotels and other hospitality services promoted by the influencers I follow are honest.",
+    type: "scale",
+    bg: null,
+  },
+  {
+    id: "q_brandtrust_4",
+    section: "Brand Trust",
     number: 36,
     title:
-      "Have influencers ever made you want a product or brand that you were not interested in before?",
-    type: "scale",
-    bg: null,
-  },
-  {
-    id: "q35_considered_over_competitors",
-    section: "Be Honest... Would You Buy It?",
-    number: 37,
-    title:
-      "Have you ever considered a brand over its competitors because an influencer made you trust that brand?",
-    type: "scale",
-    bg: null,
-  },
-  {
-    id: "q36_willing_to_buy",
-    section: "Be Honest... Would You Buy It?",
-    number: 38,
-    title: "Would you be willing to buy a product because an influencer made you trust the brand?",
-    type: "scale",
-    bg: null,
-  },
-  {
-    id: "q37_made_effort_to_purchase",
-    section: "Be Honest... Would You Buy It?",
-    number: 39,
-    title: "Have you ever made an effort to purchase a product because an influencer made you trust the brand?",
-    type: "scale",
-    bg: null,
-  },
-  {
-    id: "q38_repurchased",
-    section: "Be Honest... Would You Buy It?",
-    number: 40,
-    title: "Have you ever bought a product again because an influencer helped you trust the brand?",
+      "I feel that the hotels and other hospitality services promoted by the influencers I follow are reliable.",
     type: "scale",
     bg: null,
   },
 
-  // 06 - Feed
+  // 09 - Purchase Intention
   {
-    id: "q39_discovery_platform",
-    section: "One Last Thing About Your Feed",
-    number: 41,
-    title: "Which platform do you usually use most for discovering products or brands through influencers?",
-    type: "single",
-    options: ["TikTok", "Instagram", "YouTube", "Facebook"],
-    allowOther: true,
+    id: "q_purchase_1",
+    section: "Purchase Intention",
+    number: 37,
+    title:
+      "The probability of considering hotels and other hospitality services promoted by the influencers I follow is high.",
+    type: "scale",
     bg: null,
   },
   {
-    id: "q40_content_type",
-    section: "One Last Thing About Your Feed",
-    number: 42,
-    title: "When an influencer recommends a product, which type of content makes you most interested?",
-    type: "multi",
-    options: [
-      "Detailed review",
-      "Short video / Reel",
-      "Product demonstration",
-      "Personal experience / Story",
-      "Comparison with other products",
-    ],
-    allowOther: true,
+    id: "q_purchase_2",
+    section: "Purchase Intention",
+    number: 38,
+    title:
+      "I would go for the hotels and other hospitality services promoted by the influencers I follow if I visit the area where those hotels and services are available.",
+    type: "scale",
+    bg: null,
+  },
+  {
+    id: "q_purchase_3",
+    section: "Purchase Intention",
+    number: 39,
+    title:
+      "I would actively seek out hospitality and tourism services promoted by the influencers I follow.",
+    type: "scale",
+    bg: null,
+  },
+  {
+    id: "q_purchase_4",
+    section: "Purchase Intention",
+    number: 40,
+    title:
+      "If I needed to book a hotel or get any other hospitality service, I would go for the hotels/services promoted by the influencers I follow.",
+    type: "scale",
     bg: null,
   },
 ];

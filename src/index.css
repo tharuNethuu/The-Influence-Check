@@ -75,7 +75,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: calc(590px + var(--safe-top)) 16px calc(20px + var(--safe-bottom));
+  padding: calc(430px + var(--safe-top)) 16px calc(20px + var(--safe-bottom));
   overflow-y: auto;
 }
 
