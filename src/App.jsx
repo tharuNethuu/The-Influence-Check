@@ -205,7 +205,7 @@ export default function App() {
       {currentSection && (
         <div className="glass-card">
           <span className="eyebrow">
-            {currentSection.number} · {currentSection.title}
+           {/* {currentSection.number} · {currentSection.title} */}
           </span>
 
           <div className="section-questions">
