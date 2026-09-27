@@ -31,7 +31,7 @@ const SL_DISTRICTS = [
 // Local authority (Municipal Council / Urban Council / Pradeshiya Sabha)
 // areas, per district. Used to auto-populate the "city / local authority"
 // question once a district has been chosen.
-export const LOCAL_AUTHORITIES = {
+/* export const LOCAL_AUTHORITIES = {
   Colombo: [
     "Colombo Municipal Council",
     "Dehiwala - Mt. Lavinia Municipal Council",
@@ -424,7 +424,7 @@ export const LOCAL_AUTHORITIES = {
     "Dehiowita Pradeshiya Sabha",
   ],
 };
-
+ */
 export const INTRO = {
   title: "",
   body:
@@ -492,17 +492,19 @@ export const QUESTIONS = [
     options: SL_DISTRICTS,
     bg: null,
   },
-  {
-    id: "q3b_city",
-    section: "A Little About You",
-    number: 6,
-    title: "Which city / local authority area do you live in?",
-    subtitle: "Options are based on the district you just picked.",
-    type: "dropdown",
-    placeholder: "Select your city",
-    dependsOn: "q3_district",
-    bg: null,
-  },
+ {
+  id: "q3b_authority_type",
+  section: "A Little About You",
+  number: 6,
+  title:
+    "Is the area you live in governed by a Municipal Council / Urban Council or a Pradeshiya Sabha?",
+  type: "single",
+  options: [
+    "Municipal Council / Urban Council",
+    "Pradeshiya Sabha",
+  ],
+  bg: null,
+},
   {
     id: "q4_situation",
     section: "A Little About You",
