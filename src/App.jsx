@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
-import { QUESTIONS, INTRO, OUTRO, LOCAL_AUTHORITIES } from "./data/questions.js";
+import { QUESTIONS, INTRO, OUTRO } from "./data/questions.js";
 import QuestionCard, { OTHER_VALUE } from "./components/QuestionCard.jsx";
 import ArrowButton from "./components/ArrowButton.jsx";
 import IntroCard from "./components/IntroCard.jsx";
@@ -58,14 +58,10 @@ export default function App() {
   answers.q_screen_follows === "No";
 
   // Resolve "dependsOn" dropdowns for every question in the current section.
-  const resolvedQuestions = useMemo(() => {
-    if (!currentSection) return [];
-    return currentSection.questions.map((q) => {
-      if (!q.dependsOn) return q;
-      const dependValue = answers[q.dependsOn];
-      return { ...q, options: LOCAL_AUTHORITIES[dependValue] || [] };
-    });
-  }, [currentSection, answers]);
+const resolvedQuestions = useMemo(() => {
+  if (!currentSection) return [];
+  return currentSection.questions;
+}, [currentSection]);
 
   // Background video: intro gets homebg.mp4, everything else gets bg.mp4.
   const bgVideoSrc = index === INTRO_INDEX ? "/homebg.mp4" : "/bg.mp4";
