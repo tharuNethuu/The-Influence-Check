@@ -1,5 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
-import { QUESTIONS, INTRO, OUTRO } from "./data/questions.js";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";import { QUESTIONS, INTRO, OUTRO } from "./data/questions.js";
 import QuestionCard, { OTHER_VALUE } from "./components/QuestionCard.jsx";
 import ArrowButton from "./components/ArrowButton.jsx";
 import IntroCard from "./components/IntroCard.jsx";
@@ -51,6 +50,34 @@ export default function App() {
   const [animating, setAnimating] = useState(false);
   const [submitStatus, setSubmitStatus] = useState("idle");
   const [submitError, setSubmitError] = useState("");
+
+  const scrollRef = useRef(null);
+const [moreBelow, setMoreBelow] = useState(false);
+
+const updateScrollHint = useCallback(() => {
+  const el = scrollRef.current;
+  if (!el) {
+    setMoreBelow(false);
+    return;
+  }
+  setMoreBelow(el.scrollHeight - el.scrollTop - el.clientHeight > 12);
+}, []);
+
+// Re-check on section change, answer change (height can grow), and resize
+useEffect(() => {
+  updateScrollHint();
+  const t = window.setTimeout(updateScrollHint, 500); // after the fade-in finishes
+  window.addEventListener("resize", updateScrollHint);
+  return () => {
+    window.clearTimeout(t);
+    window.removeEventListener("resize", updateScrollHint);
+  };
+}, [index, answers, updateScrollHint]);
+
+const scrollDown = () => {
+  const el = scrollRef.current;
+  if (el) el.scrollBy({ top: el.clientHeight * 0.8, behavior: "smooth" });
+};
 
   const currentSection = index >= 0 && index < SECTIONS.length ? SECTIONS[index] : null;
   const failedScreening =
@@ -204,21 +231,35 @@ const resolvedQuestions = useMemo(() => {
            {/* {currentSection.number} · {currentSection.title} */}
           </span>
 
-          <div className="section-questions">
-            {resolvedQuestions.map((q) => (
-              <div className="section-question-block" key={q.id}>
-                <h2 className="question-title">{q.title}</h2>
-                {q.subtitle && <p className="question-subtitle">{q.subtitle}</p>}
-                <QuestionCard
-                  question={q}
-                  value={answers[q.id]}
-                  otherText={otherTexts[q.id]}
-                  onChange={(value) => handleChange(q, value)}
-                  onOtherText={(text) => handleOtherText(q, text)}
-                />
-              </div>
-            ))}
-          </div>
+          <div className="scroll-wrap">
+  <div className="section-questions" ref={scrollRef} onScroll={updateScrollHint}>
+    {resolvedQuestions.map((q) => (
+      <div className="section-question-block" key={q.id}>
+        <h2 className="question-title">{q.title}</h2>
+        {q.subtitle && <p className="question-subtitle">{q.subtitle}</p>}
+        <QuestionCard
+          question={q}
+          value={answers[q.id]}
+          otherText={otherTexts[q.id]}
+          onChange={(value) => handleChange(q, value)}
+          onOtherText={(text) => handleOtherText(q, text)}
+        />
+      </div>
+    ))}
+  </div>
+
+  {moreBelow && (
+    <>
+      <div className="scroll-fade" />
+      <button type="button" className="scroll-hint" onClick={scrollDown}>
+        Scroll for more questions
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M6 9l6 6 6-6" />
+        </svg>
+      </button>
+    </>
+  )}
+</div>
 
           <div className="nav-buttons">
             <ArrowButton direction="back" onClick={handleBack} disabled={false} />

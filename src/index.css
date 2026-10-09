@@ -110,13 +110,98 @@ body {
 }
 
 /* Scrollable stack of questions within one section */
+.scroll-wrap {
+  position: relative;
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Scrollable stack of questions within one section */
 .section-questions {
   width: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 26px;
-  padding-right: 2px;
+  padding-right: 10px;
+  padding-bottom: 36px; /* room so the last question isn't hidden under the fade */
+  overscroll-behavior: contain;
+
+  /* Always-visible slim scrollbar (Firefox) */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.75) rgba(255, 255, 255, 0.15);
+}
+
+/* Always-visible slim scrollbar (Chrome / Safari / Edge) */
+.section-questions::-webkit-scrollbar {
+  width: 5px;
+}
+.section-questions::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+}
+.section-questions::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.75);
+  border-radius: 999px;
+}
+
+/* Bottom fade: signals content is cut off */
+.scroll-fade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 70px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.85));
+  pointer-events: none;
+  border-radius: 0 0 12px 12px;
+}
+
+/* Bouncing "scroll for more" pill */
+.scroll-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 8px;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #fff;
+  color: #000;
+  border: none;
+  border-radius: 999px;
+  padding: 7px 14px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+  animation: hintBounce 1.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wipe-overlay,
+  .page-content,
+  .arrow-icon,
+  .scroll-hint {
+    animation: none !important;
+  }
+  .scroll-hint {
+    transform: translateX(-50%);
+  }
+  .bg-video {
+    display: none;
+  }
+}
+
+@keyframes hintBounce {
+  0%, 100% { transform: translate(-50%, 0); }
+  50%      { transform: translate(-50%, 4px); }
 }
 
 .section-question-block {
