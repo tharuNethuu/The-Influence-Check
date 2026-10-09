@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";import { QUESTIONS, INTRO, OUTRO } from "./data/questions.js";
+=======
+import { useCallback, useMemo, useState } from "react";
+import { QUESTIONS, INTRO, OUTRO } from "./data/questions.js";
+>>>>>>> 6e81e2d299e77279ad7367b79704337a78784d18
 import QuestionCard, { OTHER_VALUE } from "./components/QuestionCard.jsx";
 import ArrowButton from "./components/ArrowButton.jsx";
 import IntroCard from "./components/IntroCard.jsx";
